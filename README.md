@@ -26,7 +26,7 @@ Moves can be made by passing in the player number, from co-ordinates and an arra
 
 
 ```ruby
-  game_state.move!(1, {x: 1, y: 1}, [{x: 2, y: 2}])
+  game_state.move!(1, {x: 1, y: 2}, [{x: 2, y: 3}])
 ```
 
 The Winner can be found by calling winner on the object.
