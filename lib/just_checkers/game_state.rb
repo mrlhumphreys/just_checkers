@@ -130,7 +130,7 @@ module JustCheckers
 
     def move_valid?(from, to) # :nodoc:
       legs = to.unshift(from)
-      if from.piece
+      if from && from.piece
         legs.each_cons(2).map do |a, b|
           if squares.occupied_by(from.piece.player_number).any? { |s| s.possible_jumps(s.piece, squares).any? }
             a.possible_jumps(from.piece, squares).include?(b)
