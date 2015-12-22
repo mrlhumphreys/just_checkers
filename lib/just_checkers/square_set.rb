@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'just_checkers/square'
+require 'just_checkers/vector'
 
 module JustCheckers
 
