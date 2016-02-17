@@ -17,9 +17,13 @@ describe JustCheckers::GameState do
     it 'must have 12 player 2 pieces' do
       assert_equal(12, game_state.squares.where(piece: {player_number: 2}).size)
     end
+    
+    it 'must have no messages' do
+      assert_empty(game_state.messages)
+    end
   end
 
-  describe 'perform_move!' do
+  describe 'performing a successful move' do
     let(:player_number) { 1 }
 
     let(:from_x) { 0 }
@@ -55,6 +59,11 @@ describe JustCheckers::GameState do
       square = game_state.squares.find_by_x_and_y(between_x, between_y)
       assert square.unoccupied?
     end
+    
+    it 'must have no messages' do
+      game_state.move!(player_number, from_position, [to_position])
+      assert_empty(game_state.messages)
+    end
   end
 
   describe 'a piece has possible jump' do
@@ -74,14 +83,19 @@ describe JustCheckers::GameState do
     let(:game_state) { JustCheckers::GameState.new(current_player_number: player_number, squares: [jumper, enemy, landing, not_jumper, empty]) }
 
     describe 'with that piece that can jump' do
-      it 'must be a valid move' do
+      it 'must be able to move' do
         assert game_state.move!(player_number, jumper_position, [landing_position])
       end
     end
 
     describe 'with another piece that cannot jump' do
-      it 'must not be a valid move' do
+      it 'must not be able to move' do
         refute game_state.move!(player_number, not_jumper_position, [empty_position])
+      end
+      
+      it 'must set an error' do
+        game_state.move!(player_number, not_jumper_position, [empty_position])
+        assert game_state.messages.first, 'Another piece must capture first.'
       end
     end
   end
@@ -133,6 +147,11 @@ describe JustCheckers::GameState do
 
     it 'must return false' do
       refute game_state.move!(not_current_player_number, from_position, [to_position])
+    end
+    
+    it 'must set an error' do
+      game_state.move!(not_current_player_number, from_position, [to_position])
+      assert game_state.messages.first, "It is not that player's turn."
     end
 
     it 'must not pass the turn' do
@@ -196,6 +215,11 @@ describe JustCheckers::GameState do
 
       it 'must return false' do
         refute game_state.move!(current_player_number, from_position, [behind_position])
+      end
+      
+      it 'must set an error' do
+        game_state.move!(current_player_number, from_position, [behind_position])
+        assert game_state.messages.first, 'That piece cannot move like that.'
       end
 
       it 'must not pass the turn' do

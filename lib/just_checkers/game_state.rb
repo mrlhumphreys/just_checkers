@@ -23,6 +23,7 @@ module JustCheckers
     def initialize(args = {})
       @current_player_number = args[:current_player_number]
       @squares = SquareSet.new(squares: args[:squares])
+      @messages = []
     end
 
     # Instantiates a new GameState object in the starting position
@@ -73,7 +74,7 @@ module JustCheckers
       })
     end
 
-    attr_reader :current_player_number, :squares
+    attr_reader :current_player_number, :squares, :messages
 
     # Returns a hash serialized representation of the game state
     def as_json
@@ -109,10 +110,12 @@ module JustCheckers
     #   # Moves a piece from a square to perform a double jump
     #   game_state.move!(1, {x: 0, y: 1}, [{x: 1, y: 2}, {x: 3, y: 4}])
     def move!(player_number, from, to)
+      @messages = []
       from_square = squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)
       to_squares = to.map { |p| squares.find_by_x_and_y(p[:x].to_i, p[:y].to_i) }
 
       if player_number != current_player_number
+        @messages.push("It is not that player's turn.")
         false
       else
         if move_valid?(from_square, to_squares)
@@ -133,9 +136,19 @@ module JustCheckers
       if from && from.piece
         legs.each_cons(2).map do |a, b|
           if squares.occupied_by(from.piece.player_number).any? { |s| s.possible_jumps(s.piece, squares).any? }
-            a.possible_jumps(from.piece, squares).include?(b)
+            if a.possible_jumps(from.piece, squares).include?(b)
+              true
+            else
+              @messages.push('Another piece must capture first.')
+              false
+            end
           else
-            a.possible_moves(from.piece, squares).include?(b)
+            if a.possible_moves(from.piece, squares).include?(b)
+              true
+            else
+              @messages.push('That piece cannot move like that.')
+              false
+            end
           end
         end.all?
       else
