@@ -152,6 +152,7 @@ module JustCheckers
           end
         end.all?
       else
+        @messages.push('There is no piece there.')
         false
       end
     end

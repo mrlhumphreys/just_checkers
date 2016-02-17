@@ -159,6 +159,19 @@ describe JustCheckers::GameState do
       assert_equal current_player_number, game_state.current_player_number
     end
   end
+  
+  describe 'moving a piece that does not exist' do
+    let(:game_state) { JustCheckers::GameState.default }
+    
+    it 'must return false' do
+      refute game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
+    end
+    
+    it 'must set an error' do
+      game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
+      assert game_state.messages.first, "There is no piece there."
+    end
+  end
 
   describe 'when it is the players turn' do
     let(:current_player_number) { 2 }
