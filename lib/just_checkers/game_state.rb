@@ -7,10 +7,16 @@ module JustCheckers
   # Represents a game of Checkers in progress.
   class GameState
 
-    # New objects can be instantiated by passing in a hash with
+    # New objects can be instantiated.
     #
-    # * +current_player_number+ - Who's turn it is, 1 or 2
-    # * +squares+ - An array of squares, each with x and y co-ordinates and a piece.
+    # @param [Hash] args
+    #   The data needed for a game
+    #
+    # @option args [Fixnum] :current_player_number
+    #   Who's turn it is, 1 or 2
+    #
+    # @option args [Array<Square>] :squares
+    #   An array of squares, each with x and y co-ordinates and a piece.
     #
     # ==== Example:
     #   # Instantiates a new Game of Checkers
@@ -22,11 +28,22 @@ module JustCheckers
     #   })
     def initialize(args = {})
       @current_player_number = args[:current_player_number]
-      @squares = SquareSet.new(squares: args[:squares])
+      @squares = SquareSet.new(squares: args[:squares] || [])
       @messages = []
     end
+    
+    # @return [Fixnum] who's turn it is.
+    attr_reader :current_player_number
+    
+    # @return [Array<Square>] the board state.
+    attr_reader :squares
+    
+    # @return [Array<String>] useful messages if any.
+    attr_reader :messages
 
     # Instantiates a new GameState object in the starting position
+    #
+    # @return [GameState]
     def self.default
       new({
         current_player_number: 1,
@@ -74,19 +91,23 @@ module JustCheckers
       })
     end
 
-    attr_reader :current_player_number, :squares, :messages
-
-    # Returns a hash serialized representation of the game state
+    # A hashed serialized representation of the game state
+    #
+    # @return [Hash]
     def as_json
       { current_player_number: current_player_number, squares: squares.as_json, winner: winner }
     end
 
     # Returns the json serialized representation of the game state.
+    #
+    # @return String
     def to_json
       as_json.to_json
     end
 
-    # Returns the player number of the winner. It returns nil if there is no winner
+    # The player number of the winner. It returns nil if there is no winner.
+    #
+    # @return [Fixnum,NilClass]
     def winner
       if squares.occupied_by(1).none? { |s| s.possible_jumps(s.piece, squares).any? || s.possible_moves(s.piece, squares).any? }
         2
@@ -99,16 +120,23 @@ module JustCheckers
 
     # Moves a piece owned by the player, from one square, to another
     #
-    # * +player_number+ - the player number, 1 or 2
-    # * +from+ - A hash containing x and y co-ordinates.
-    # * +to+ - An array of hashes containing x and y co-ordinates.
-    #
     # It moves the piece and returns true if the move is valid and it's the player's turn.
     # It returns false otherwise.
     #
     # ==== Example:
     #   # Moves a piece from a square to perform a double jump
     #   game_state.move!(1, {x: 0, y: 1}, [{x: 1, y: 2}, {x: 3, y: 4}])
+    #
+    # @param [Fixnum] player_number
+    #   the player number, 1 or 2.
+    #
+    # @param [Hash] from
+    #   where the moving piece currently is.
+    #
+    # @param [Array<Hash>] to
+    #   each place the piece is going to move to.
+    #
+    # @return [Boolean]
     def move!(player_number, from, to)
       @messages = []
       from_square = squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)

@@ -9,8 +9,11 @@ module JustCheckers
 
     # New objects can be instantiated by passing in a two points with x and y co-ordinates
     #
-    # * +a+ - A point with an x and y co-ordinates.
-    # * +b+ - A point with an x and y co-ordinates.
+    # @param [Point] a
+    #   the start point.
+    #
+    # @param [Point] b
+    #   the end point.
     #
     # ==== Example:
     #   # Instantiates a new Vector
@@ -22,9 +25,15 @@ module JustCheckers
       @a, @b = a, b
     end
 
-    attr_reader :a, :b
+    # @return [Point] the start point.
+    attr_reader :a
+    
+    # @return [Point] the end point.
+    attr_reader :b
 
-    # returns how big the vector is if it's diagonal, otherwise, nil.
+    # How big the vector is if it's diagonal, otherwise, nil.
+    #
+    # @return [Fixnum,NilClass]
     def magnitude
       if diagonal
         dx.abs
@@ -33,12 +42,16 @@ module JustCheckers
       end
     end
 
-    # returns a direction of the vector as a object
+    # The direction of the vector as a object
+    #
+    # @return [Direction]
     def direction
       Direction.new(direction_x, direction_y)
     end
 
-    # returns the x component of the direction, 1 if moving down, -1 if moving up, 0 otherwise
+    # The x component of the direction, 1 if moving down, -1 if moving up, 0 otherwise
+    #
+    # @return [Fixnum]
     def direction_x
       if dx > 0
         1
@@ -49,7 +62,9 @@ module JustCheckers
       end
     end
 
-    # returns the y component of the direction, 1 if moving right, -1 if moving left, 0 otherwise
+    # The y component of the direction, 1 if moving right, -1 if moving left, 0 otherwise
+    #
+    # @return [Fixnum]
     def direction_y
       if dy > 0
         1
@@ -60,7 +75,9 @@ module JustCheckers
       end
     end
 
-    # returns true if the vector is diagonal.
+    # Is the vector diagonal?
+    #
+    # @return [Boolean]
     def diagonal
       dx.abs == dy.abs
     end

@@ -7,8 +7,11 @@ module JustCheckers
 
     # New objects can be instantiated with
     #
-    # * +x+ - x magnitude
-    # * +y+ - y magnitude
+    # @param [Fixnum] x
+    #   the x magnitude.
+    #
+    # @param [Fixnum] y
+    #   the y magnitude.
     #
     # ==== Example:
     #   # Instantiates a new Direction
@@ -20,9 +23,18 @@ module JustCheckers
       @x, @y = x, y
     end
 
-    attr_reader :x, :y
+    # @return [Fixnum] the x magnitude.
+    attr_reader :x
+    
+    # @return [Fixnum] the y magnitude.
+    attr_reader :y
 
-    # check if directions are equal by seeing if their magnitudes are equal.
+    # Check if directions are equal by seeing if their magnitudes are equal.
+    #
+    # @param [Direction] other
+    #   the other direction to compare to.
+    #
+    # @return [Boolean]
     def ==(other)
       self.x == other.x && self.y == other.y
     end

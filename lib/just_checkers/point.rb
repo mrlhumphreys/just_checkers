@@ -7,8 +7,11 @@ module JustCheckers
 
     # New objects can be instantiated with
     #
-    # * +x+ - x co-ordinate
-    # * +y+ - y co-ordinate
+    # @param [Fixnum] x
+    #   the x co-ordinate.
+    #
+    # @param [Fixnum] y
+    #   the y co-ordinate.
     #
     # ==== Example:
     #   # Instantiates a new Point
@@ -20,14 +23,28 @@ module JustCheckers
       @x, @y = x, y
     end
 
-    attr_reader :x, :y
+    # @return [Fixnum] the x co-ordinate.
+    attr_reader :x
+    
+    # @return [Fixnum] the y co-ordinate.
+    attr_reader :y
 
-    # add a point to another point by adding their co-ordinates and returning a new point.
+    # Add a point to another point by adding their co-ordinates and returning a new point.
+    #
+    # @param [Point] other
+    #   the other point to add.
+    #
+    # @return [Point]
     def +(other)
       self.class.new(self.x + other.x, self.y + other.y)
     end
 
-    # check if points are equal by seeing if their co-ordinates are equal.
+    # Check if popints are equal by seeing if their co-ordinates are equal.
+    #
+    # @param [Point] other
+    #   the other point to compare to.
+    #
+    # @return [TrueClass, FalseClass]
     def ==(other)
       self.x == other.x && self.y == other.y
     end
