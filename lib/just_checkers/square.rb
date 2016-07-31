@@ -29,22 +29,22 @@ module JustCheckers
     #     y: 0,
     #     piece: { player_number: 1, direction: 1, king: false }
     #   })
-    def initialize(args = {})
-      @x = args[:x]
-      @y = args[:y]
-      if args[:piece].is_a?(Hash)
-        @piece = Piece.new(args[:piece])
+    def initialize(x: , y: , piece: nil)
+      @x = x
+      @y = y
+      @piece = if piece.is_a?(Hash)
+        Piece.new(piece)
       else
-        @piece = args[:piece]
+        piece
       end
     end
 
     # @return [Fixnum] the x co-ordinate of the square.
-    attr_reader :x 
-    
+    attr_reader :x
+
     # @return [Fixnum] the y co-ordinate of the square.
     attr_reader :y
-    
+
     # @return [Piece,NilClass] The piece on the square if any.
     attr_accessor :piece
 

@@ -26,18 +26,18 @@ module JustCheckers
     #       { x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }}
     #     ]
     #   })
-    def initialize(args = {})
-      @current_player_number = args[:current_player_number]
-      @squares = SquareSet.new(squares: args[:squares] || [])
+    def initialize(current_player_number: , squares: [])
+      @current_player_number = current_player_number
+      @squares = SquareSet.new(squares: squares)
       @messages = []
     end
-    
+
     # @return [Fixnum] who's turn it is.
     attr_reader :current_player_number
-    
+
     # @return [Array<Square>] the board state.
     attr_reader :squares
-    
+
     # @return [Array<String>] useful messages if any.
     attr_reader :messages
 
@@ -95,14 +95,11 @@ module JustCheckers
     #
     # @return [Hash]
     def as_json
-      { current_player_number: current_player_number, squares: squares.as_json, winner: winner }
-    end
-
-    # Returns the json serialized representation of the game state.
-    #
-    # @return String
-    def to_json
-      as_json.to_json
+      {
+        current_player_number: current_player_number,
+        squares: squares.as_json,
+        winner: winner
+      }
     end
 
     # The player number of the winner. It returns nil if there is no winner.

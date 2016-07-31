@@ -5,7 +5,7 @@ require 'just_checkers/square'
 describe JustCheckers::Square do
   describe 'a square initialized' do
     describe 'with a hash piece' do
-      let(:square) { JustCheckers::Square.new(x: 0, y: 0, piece: {player: {number: 1, direction: -1}, king: false}) }
+      let(:square) { JustCheckers::Square.new(x: 0, y: 0, piece: {player_number: 1, direction: -1, king: false}) }
 
       it 'must have a piece' do
         assert_instance_of JustCheckers::Piece, square.piece
@@ -13,7 +13,7 @@ describe JustCheckers::Square do
     end
 
     describe 'with an actual piece' do
-      let(:piece) { JustCheckers::Piece.new(player: {number: 1, direction: -1}, king: false) }
+      let(:piece) { JustCheckers::Piece.new(player_number: 1, direction: -1, king: false) }
       let(:square) { JustCheckers::Square.new(x: 0, y: 0, piece: piece) }
 
       it 'must have a piece' do
@@ -22,7 +22,7 @@ describe JustCheckers::Square do
     end
 
     describe 'with a piece' do
-      let(:square) { JustCheckers::Square.new(x: 0, y: 0, piece: {player: {number: 1, direction: -1}, king: false}) }
+      let(:square) { JustCheckers::Square.new(x: 0, y: 0, piece: {player_number: 1, direction: -1, king: false}) }
 
       it 'must not be unoccupied' do
         refute square.unoccupied?
@@ -62,9 +62,9 @@ describe JustCheckers::Square do
   end
 
   describe 'a blocked square' do
-    let(:blocking_square_a) { JustCheckers::Square.new(x: 0, y: 1, piece: {player: {number: 2, direction: -1}}) }
-    let(:blocking_square_b) { JustCheckers::Square.new(x: 2, y: 1, piece: {player: {number: 2, direction: -1}}) }
-    let(:blocked_square) { JustCheckers::Square.new(x: 1, y: 0, piece: {player: {number: 1, direction: 1}}) }
+    let(:blocking_square_a) { JustCheckers::Square.new(x: 0, y: 1, piece: {player_number: 2, direction: -1}) }
+    let(:blocking_square_b) { JustCheckers::Square.new(x: 2, y: 1, piece: {player_number: 2, direction: -1}) }
+    let(:blocked_square) { JustCheckers::Square.new(x: 1, y: 0, piece: {player_number: 1, direction: 1}) }
 
     let(:square_set) { JustCheckers::SquareSet.new(squares: [blocking_square_a, blocking_square_b, blocked_square]) }
 

@@ -26,11 +26,11 @@ module JustCheckers
     #       { x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }}
     #     ]
     #   })
-    def initialize(args = {})
-      if args[:squares].first.class == Square
-        @squares = args[:squares]
+    def initialize(squares: [])
+      @squares = if squares.first.class == Square
+        squares
       else
-        @squares = args[:squares].map { |s| Square.new(s) }
+        squares.map { |s| Square.new(s) }
       end
     end
 

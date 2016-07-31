@@ -17,7 +17,7 @@ describe JustCheckers::GameState do
     it 'must have 12 player 2 pieces' do
       assert_equal(12, game_state.squares.where(piece: {player_number: 2}).size)
     end
-    
+
     it 'must have no messages' do
       assert_empty(game_state.messages)
     end
@@ -59,7 +59,7 @@ describe JustCheckers::GameState do
       square = game_state.squares.find_by_x_and_y(between_x, between_y)
       assert square.unoccupied?
     end
-    
+
     it 'must have no messages' do
       game_state.move!(player_number, from_position, [to_position])
       assert_empty(game_state.messages)
@@ -92,7 +92,7 @@ describe JustCheckers::GameState do
       it 'must not be able to move' do
         refute game_state.move!(player_number, not_jumper_position, [empty_position])
       end
-      
+
       it 'must set an error' do
         game_state.move!(player_number, not_jumper_position, [empty_position])
         assert game_state.messages.first, 'Another piece must capture first.'
@@ -148,7 +148,7 @@ describe JustCheckers::GameState do
     it 'must return false' do
       refute game_state.move!(not_current_player_number, from_position, [to_position])
     end
-    
+
     it 'must set an error' do
       game_state.move!(not_current_player_number, from_position, [to_position])
       assert game_state.messages.first, "It is not that player's turn."
@@ -159,14 +159,14 @@ describe JustCheckers::GameState do
       assert_equal current_player_number, game_state.current_player_number
     end
   end
-  
+
   describe 'moving a piece that does not exist' do
     let(:game_state) { JustCheckers::GameState.default }
-    
+
     it 'must return false' do
       refute game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
     end
-    
+
     it 'must set an error' do
       game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
       assert game_state.messages.first, "There is no piece there."
@@ -229,7 +229,7 @@ describe JustCheckers::GameState do
       it 'must return false' do
         refute game_state.move!(current_player_number, from_position, [behind_position])
       end
-      
+
       it 'must set an error' do
         game_state.move!(current_player_number, from_position, [behind_position])
         assert game_state.messages.first, 'That piece cannot move like that.'
@@ -301,7 +301,7 @@ describe JustCheckers::GameState do
   describe 'a player has no pieces' do
     let(:player_one_square) { JustCheckers::Square.new(x: 0, y: 0, piece: {player_number: 1, direction: 1}) }
     let(:empty_square) { JustCheckers::Square.new(x: 1, y: 1) }
-    let(:game_state) { JustCheckers::GameState.new(squares: [player_one_square, empty_square]) }
+    let(:game_state) { JustCheckers::GameState.new(current_player_number: 1, squares: [player_one_square, empty_square]) }
 
     it 'makes the other player the winner' do
       assert_equal 1, game_state.winner
@@ -313,7 +313,7 @@ describe JustCheckers::GameState do
     let(:empty_square) { JustCheckers::Square.new(x: 1, y: 1) }
     let(:blocking_square) { JustCheckers::Square.new(x: 6, y: 0, piece: {player_number: 1, direction: 1}) }
     let(:player_two_square) { JustCheckers::Square.new(x: 7, y: 1, piece: {player_number: 2, direction: -1}) }
-    let(:game_state) { JustCheckers::GameState.new(squares: [player_one_square, empty_square, blocking_square, player_two_square]) }
+    let(:game_state) { JustCheckers::GameState.new(current_player_number: 1, squares: [player_one_square, empty_square, blocking_square, player_two_square]) }
 
     it 'makes the other player the winner' do
       assert_equal 1, game_state.winner
@@ -324,7 +324,7 @@ describe JustCheckers::GameState do
     let(:player_one_square) { JustCheckers::Square.new(x: 0, y: 0, piece: {player_number: 1, direction: 1}) }
     let(:empty_square) { JustCheckers::Square.new(x: 1, y: 1) }
     let(:player_two_square) { JustCheckers::Square.new(x: 2, y: 2, piece: {player_number: 2, direction: -1}) }
-    let(:game_state) { JustCheckers::GameState.new(squares: [player_one_square, empty_square, player_two_square]) }
+    let(:game_state) { JustCheckers::GameState.new(current_player_number: 1, squares: [player_one_square, empty_square, player_two_square]) }
 
     it 'makes the other player the winner' do
       assert_equal nil, game_state.winner
