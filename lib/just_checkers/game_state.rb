@@ -97,8 +97,7 @@ module JustCheckers
     def as_json
       {
         current_player_number: current_player_number,
-        squares: squares.as_json,
-        winner: winner
+        squares: squares.as_json
       }
     end
 
