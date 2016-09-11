@@ -29,10 +29,10 @@ Moves can be made by passing in the player number, from co-ordinates and an arra
   game_state.move!(1, {x: 1, y: 2}, [{x: 2, y: 3}])
 ```
 
-If something happens a message may be found in the messages attribute
+If something happens errors may be found in the errors attribute
 
 ```ruby
-  game_state.messages
+  game_state.errors
 ```
 
 The Winner can be found by calling winner on the object.

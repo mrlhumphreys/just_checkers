@@ -18,8 +18,8 @@ describe JustCheckers::GameState do
       assert_equal(12, game_state.squares.where(piece: {player_number: 2}).size)
     end
 
-    it 'must have no messages' do
-      assert_empty(game_state.messages)
+    it 'must have no errors' do
+      assert_empty(game_state.errors)
     end
   end
 
@@ -60,9 +60,9 @@ describe JustCheckers::GameState do
       assert square.unoccupied?
     end
 
-    it 'must have no messages' do
+    it 'must have no errors' do
       game_state.move!(player_number, from_position, [to_position])
-      assert_empty(game_state.messages)
+      assert_empty(game_state.errors)
     end
   end
 
@@ -95,7 +95,7 @@ describe JustCheckers::GameState do
 
       it 'must set an error' do
         game_state.move!(player_number, not_jumper_position, [empty_position])
-        assert game_state.messages.first, 'Another piece must capture first.'
+        assert game_state.errors.first, 'Another piece must capture first.'
       end
     end
   end
@@ -151,7 +151,7 @@ describe JustCheckers::GameState do
 
     it 'must set an error' do
       game_state.move!(not_current_player_number, from_position, [to_position])
-      assert game_state.messages.first, "It is not that player's turn."
+      assert game_state.errors.first, "It is not that player's turn."
     end
 
     it 'must not pass the turn' do
@@ -169,7 +169,7 @@ describe JustCheckers::GameState do
 
     it 'must set an error' do
       game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
-      assert game_state.messages.first, "There is no piece there."
+      assert game_state.errors.first, "There is no piece there."
     end
   end
 
@@ -232,7 +232,7 @@ describe JustCheckers::GameState do
 
       it 'must set an error' do
         game_state.move!(current_player_number, from_position, [behind_position])
-        assert game_state.messages.first, 'That piece cannot move like that.'
+        assert game_state.errors.first, 'That piece cannot move like that.'
       end
 
       it 'must not pass the turn' do

@@ -13,10 +13,7 @@ module JustCheckers
     # New objects can be instantiated by passing in a hash with squares.
     # They can be square objects or hashes.
     #
-    # @param [Hash] args
-    #   The data needed for the squares
-    #
-    # @option args [Array<Square,Hash>] squares
+    # @param [Array<Square,Hash>] squares
     #   An array of squares, each with x and y co-ordinates and a piece.
     #
     # ==== Example:

@@ -1,4 +1,8 @@
 require 'just_checkers/square_set'
+require 'just_checkers/errors/not_players_turn_error'
+require 'just_checkers/errors/piece_must_capture_error'
+require 'just_checkers/errors/invalid_move_error'
+require 'just_checkers/errors/empty_square_error'
 
 module JustCheckers
 
@@ -9,13 +13,10 @@ module JustCheckers
 
     # New objects can be instantiated.
     #
-    # @param [Hash] args
-    #   The data needed for a game
-    #
-    # @option args [Fixnum] :current_player_number
+    # @param [Fixnum] current_player_number
     #   Who's turn it is, 1 or 2
     #
-    # @option args [Array<Square>] :squares
+    # @param [Array<Square>] squares
     #   An array of squares, each with x and y co-ordinates and a piece.
     #
     # ==== Example:
@@ -29,7 +30,7 @@ module JustCheckers
     def initialize(current_player_number: , squares: [])
       @current_player_number = current_player_number
       @squares = SquareSet.new(squares: squares)
-      @messages = []
+      @errors = []
     end
 
     # @return [Fixnum] who's turn it is.
@@ -38,8 +39,8 @@ module JustCheckers
     # @return [Array<Square>] the board state.
     attr_reader :squares
 
-    # @return [Array<String>] useful messages if any.
-    attr_reader :messages
+    # @return [Array<Error>] errors if any.
+    attr_reader :errors
 
     # Instantiates a new GameState object in the starting position
     #
@@ -134,23 +135,21 @@ module JustCheckers
     #
     # @return [Boolean]
     def move!(player_number, from, to)
-      @messages = []
+      @errors = []
       from_square = squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)
       to_squares = to.map { |p| squares.find_by_x_and_y(p[:x].to_i, p[:y].to_i) }
 
       if player_number != current_player_number
-        @messages.push("It is not that player's turn.")
-        false
+        @errors.push NotPlayersTurnError.new
       else
         if move_valid?(from_square, to_squares)
           perform_move!(from_square, to_squares)
           promote!(to_squares.last) if promotable?(to_squares.last)
           turn!
-          true
-        else
-          false
         end
       end
+
+      @errors.empty?
     end
 
     private
@@ -160,25 +159,20 @@ module JustCheckers
       if from && from.piece
         legs.each_cons(2).map do |a, b|
           if squares.occupied_by(from.piece.player_number).any? { |s| s.possible_jumps(s.piece, squares).any? }
-            if a.possible_jumps(from.piece, squares).include?(b)
-              true
-            else
-              @messages.push('Another piece must capture first.')
-              false
+            unless a.possible_jumps(from.piece, squares).include?(b)
+              @errors.push PieceMustCaptureError.new
             end
           else
-            if a.possible_moves(from.piece, squares).include?(b)
-              true
-            else
-              @messages.push('That piece cannot move like that.')
-              false
+            unless a.possible_moves(from.piece, squares).include?(b)
+              @errors.push InvalidMoveError.new
             end
           end
         end.all?
       else
-        @messages.push('There is no piece there.')
-        false
+        @errors.push EmptySquareError.new
       end
+
+      @errors.empty?
     end
 
     def promote!(square) # :nodoc:

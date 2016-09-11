@@ -6,16 +6,13 @@ module JustCheckers
 
     # New objects can be instantiated by passing in a hash with
     #
-    # @param [Hash] args
-    #   The data needed for a piece
-    #
-    # @option args [Fixnum] player_number
+    # @param [Fixnum] player_number
     #   the owner of the piece.
     #
-    # @option args [Fixnum] direction
+    # @param [Fixnum] direction
     #   the direction forward on the board, 1 for moving down, -1 for moving up.
     #
-    # @option args [Boolean] king
+    # @option [Boolean] king
     #   set to true if the piece has been crowned.
     #
     # ==== Example:

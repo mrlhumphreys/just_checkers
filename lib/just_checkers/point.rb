@@ -25,7 +25,7 @@ module JustCheckers
 
     # @return [Fixnum] the x co-ordinate.
     attr_reader :x
-    
+
     # @return [Fixnum] the y co-ordinate.
     attr_reader :y
 

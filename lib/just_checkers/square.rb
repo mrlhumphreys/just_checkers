@@ -10,16 +10,13 @@ module JustCheckers
 
     # New objects can be instantiated by passing in a hash with
     #
-    # @param [Hash] args
-    #   The data needed for a square
-    #
-    # @option args [Fixnum] x
+    # @param [Fixnum] x
     #   the x co-ordinate of the square.
     #
-    # @option args [Fixnum] y
+    # @param [Fixnum] y
     #   the y co-ordinate of the square.
     #
-    # @option args [Piece,Hash,NilClass] piece
+    # @option [Piece,Hash,NilClass] piece
     #   The piece on the square, can be a piece object or hash or nil.
     #
     # ==== Example:

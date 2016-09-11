@@ -1,5 +1,6 @@
 require "just_checkers/version"
 
+# :nodoc:
 module JustCheckers
 
 end
