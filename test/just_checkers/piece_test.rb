@@ -7,7 +7,7 @@ describe JustCheckers::Piece do
     let(:piece) { JustCheckers::Piece.new(player_number: 1, direction: 1) }
 
     it 'turns the piece into a king' do
-      piece.promote!
+      piece.promote
       assert piece.king?
     end
   end

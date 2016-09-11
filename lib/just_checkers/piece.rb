@@ -42,7 +42,7 @@ module JustCheckers
     # promotes the piece by setting the +king+ attribute to true.
     #
     # @return [TrueClass]
-    def promote!
+    def promote
       @king = true
     end
 

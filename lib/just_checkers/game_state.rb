@@ -122,7 +122,7 @@ module JustCheckers
     #
     # ==== Example:
     #   # Moves a piece from a square to perform a double jump
-    #   game_state.move!(1, {x: 0, y: 1}, [{x: 1, y: 2}, {x: 3, y: 4}])
+    #   game_state.move(1, {x: 0, y: 1}, [{x: 1, y: 2}, {x: 3, y: 4}])
     #
     # @param [Fixnum] player_number
     #   the player number, 1 or 2.
@@ -134,7 +134,7 @@ module JustCheckers
     #   each place the piece is going to move to.
     #
     # @return [Boolean]
-    def move!(player_number, from, to)
+    def move(player_number, from, to)
       @errors = []
       from_square = squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)
       to_squares = to.map { |p| squares.find_by_x_and_y(p[:x].to_i, p[:y].to_i) }
@@ -143,9 +143,9 @@ module JustCheckers
         @errors.push NotPlayersTurnError.new
       else
         if move_valid?(from_square, to_squares)
-          perform_move!(from_square, to_squares)
-          promote!(to_squares.last) if promotable?(to_squares.last)
-          turn!
+          perform_move(from_square, to_squares)
+          promote(to_squares.last) if promotable?(to_squares.last)
+          turn
         end
       end
 
@@ -175,11 +175,11 @@ module JustCheckers
       @errors.empty?
     end
 
-    def promote!(square) # :nodoc:
-      square.piece.promote!
+    def promote(square) # :nodoc:
+      square.piece.promote
     end
 
-    def perform_move!(from, to) # :nodoc:
+    def perform_move(from, to) # :nodoc:
       legs = to.unshift(from)
       legs.each_cons(2) do |a, b|
         between_square = squares.between(a, b).first
@@ -190,7 +190,7 @@ module JustCheckers
       from.piece = nil
     end
 
-    def turn! # :nodoc:
+    def turn # :nodoc:
       @current_player_number = other_player_number
     end
 

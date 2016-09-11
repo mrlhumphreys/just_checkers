@@ -43,25 +43,25 @@ describe JustCheckers::GameState do
     let(:game_state) { JustCheckers::GameState.new(current_player_number: player_number, squares: [from, between, to]) }
 
     it 'must empty the from square' do
-      game_state.move!(player_number, from_position, [to_position])
+      game_state.move(player_number, from_position, [to_position])
       square = game_state.squares.find_by_x_and_y(from_x, from_y)
       assert square.unoccupied?
     end
 
     it 'must move the piece to to square' do
-      game_state.move!(player_number, from_position, [to_position])
+      game_state.move(player_number, from_position, [to_position])
       square = game_state.squares.find_by_x_and_y(to_x, to_y)
       refute square.unoccupied?
     end
 
     it 'must empty the between square' do
-      game_state.move!(player_number, from_position, [to_position])
+      game_state.move(player_number, from_position, [to_position])
       square = game_state.squares.find_by_x_and_y(between_x, between_y)
       assert square.unoccupied?
     end
 
     it 'must have no errors' do
-      game_state.move!(player_number, from_position, [to_position])
+      game_state.move(player_number, from_position, [to_position])
       assert_empty(game_state.errors)
     end
   end
@@ -84,17 +84,17 @@ describe JustCheckers::GameState do
 
     describe 'with that piece that can jump' do
       it 'must be able to move' do
-        assert game_state.move!(player_number, jumper_position, [landing_position])
+        assert game_state.move(player_number, jumper_position, [landing_position])
       end
     end
 
     describe 'with another piece that cannot jump' do
       it 'must not be able to move' do
-        refute game_state.move!(player_number, not_jumper_position, [empty_position])
+        refute game_state.move(player_number, not_jumper_position, [empty_position])
       end
 
       it 'must set an error' do
-        game_state.move!(player_number, not_jumper_position, [empty_position])
+        game_state.move(player_number, not_jumper_position, [empty_position])
         assert game_state.errors.first, 'Another piece must capture first.'
       end
     end
@@ -113,7 +113,7 @@ describe JustCheckers::GameState do
 
     describe 'with a piece moving to an empty square' do
       it 'must be a valid move' do
-        assert game_state.move!(player_number, mover_position, [empty_position])
+        assert game_state.move(player_number, mover_position, [empty_position])
       end
     end
   end
@@ -136,7 +136,7 @@ describe JustCheckers::GameState do
     let(:game_state) { JustCheckers::GameState.new(squares: [from_square, to_square], current_player_number: current_player_number) }
 
     it 'must not allow player the player to move' do
-      game_state.move!(not_current_player_number, from_position, [to_position])
+      game_state.move(not_current_player_number, from_position, [to_position])
 
       from_square_after_move = game_state.squares.find_by_x_and_y(from_x, from_y)
       to_square_after_move = game_state.squares.find_by_x_and_y(to_x, to_y)
@@ -146,16 +146,16 @@ describe JustCheckers::GameState do
     end
 
     it 'must return false' do
-      refute game_state.move!(not_current_player_number, from_position, [to_position])
+      refute game_state.move(not_current_player_number, from_position, [to_position])
     end
 
     it 'must set an error' do
-      game_state.move!(not_current_player_number, from_position, [to_position])
+      game_state.move(not_current_player_number, from_position, [to_position])
       assert game_state.errors.first, "It is not that player's turn."
     end
 
     it 'must not pass the turn' do
-      game_state.move!(not_current_player_number, from_position, [to_position])
+      game_state.move(not_current_player_number, from_position, [to_position])
       assert_equal current_player_number, game_state.current_player_number
     end
   end
@@ -164,11 +164,11 @@ describe JustCheckers::GameState do
     let(:game_state) { JustCheckers::GameState.default }
 
     it 'must return false' do
-      refute game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
+      refute game_state.move(1, {x: 0, y: 0}, [{x: 1, y: 1}])
     end
 
     it 'must set an error' do
-      game_state.move!(1, {x: 0, y: 0}, [{x: 1, y: 1}])
+      game_state.move(1, {x: 0, y: 0}, [{x: 1, y: 1}])
       assert game_state.errors.first, "There is no piece there."
     end
   end
@@ -196,7 +196,7 @@ describe JustCheckers::GameState do
 
     describe 'with a valid move' do
       it 'must allow the player to move' do
-        game_state.move!(current_player_number, from_position, [to_position])
+        game_state.move(current_player_number, from_position, [to_position])
 
         from_square_after_move = game_state.squares.find_by_x_and_y(from_x, from_y)
         to_square_after_move = game_state.squares.find_by_x_and_y(to_x, to_y)
@@ -206,18 +206,18 @@ describe JustCheckers::GameState do
       end
 
       it 'must return true' do
-        assert game_state.move!(current_player_number, from_position, [to_position])
+        assert game_state.move(current_player_number, from_position, [to_position])
       end
 
       it 'must pass the turn' do
-        game_state.move!(current_player_number, from_position, [to_position])
+        game_state.move(current_player_number, from_position, [to_position])
         assert_equal not_current_player_number, game_state.current_player_number
       end
     end
 
     describe 'with an invalid move' do
       it 'must not allow player the player to move' do
-        game_state.move!(current_player_number, from_position, [behind_position])
+        game_state.move(current_player_number, from_position, [behind_position])
 
         from_square_after_move = game_state.squares.find_by_x_and_y(from_x, from_y)
         to_square_after_move = game_state.squares.find_by_x_and_y(behind_x, behind_y)
@@ -227,16 +227,16 @@ describe JustCheckers::GameState do
       end
 
       it 'must return false' do
-        refute game_state.move!(current_player_number, from_position, [behind_position])
+        refute game_state.move(current_player_number, from_position, [behind_position])
       end
 
       it 'must set an error' do
-        game_state.move!(current_player_number, from_position, [behind_position])
+        game_state.move(current_player_number, from_position, [behind_position])
         assert game_state.errors.first, 'That piece cannot move like that.'
       end
 
       it 'must not pass the turn' do
-        game_state.move!(current_player_number, from_position, [behind_position])
+        game_state.move(current_player_number, from_position, [behind_position])
         assert_equal current_player_number, game_state.current_player_number
       end
     end
@@ -267,11 +267,11 @@ describe JustCheckers::GameState do
     let(:game_state) { JustCheckers::GameState.new(squares: [jumper, first_enemy, first_landing, second_enemy, second_landing], current_player_number: current_player_number) }
 
     it 'return true' do
-      assert game_state.move!(current_player_number, jumper_position, [first_landing_position, second_landing_position])
+      assert game_state.move(current_player_number, jumper_position, [first_landing_position, second_landing_position])
     end
 
     it 'must pass turn' do
-      game_state.move!(current_player_number, jumper_position, [first_landing_position, second_landing_position])
+      game_state.move(current_player_number, jumper_position, [first_landing_position, second_landing_position])
       refute_equal current_player_number, game_state.current_player_number
     end
   end
@@ -292,7 +292,7 @@ describe JustCheckers::GameState do
     let(:game_state) { JustCheckers::GameState.new(squares: [moving, last_rank], current_player_number: current_player_number) }
 
     it 'must promote' do
-      game_state.move!(current_player_number, moving_position, [last_rank_position])
+      game_state.move(current_player_number, moving_position, [last_rank_position])
       last_rank_after_move = game_state.squares.find_by_x_and_y(last_rank_x, last_rank_y)
       assert last_rank_after_move.piece.king?
     end
