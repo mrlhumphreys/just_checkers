@@ -106,9 +106,9 @@ module JustCheckers
     #
     # @return [Fixnum,NilClass]
     def winner
-      if squares.occupied_by(1).none? { |s| s.possible_jumps(s.piece, squares).any? || s.possible_moves(s.piece, squares).any? }
+      if no_pieces_for_player?(1)
         2
-      elsif squares.occupied_by(2).none? { |s| s.possible_jumps(s.piece, squares).any? || s.possible_moves(s.piece, squares).any? }
+      elsif no_pieces_for_player?(2)
         1
       else
         nil
@@ -137,16 +137,14 @@ module JustCheckers
     def move(player_number, from, to)
       @errors = []
       from_square = squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)
-      to_squares = to.map { |p| squares.find_by_x_and_y(p[:x].to_i, p[:y].to_i) }
+      to_squares = to.map { |s| squares.find_by_x_and_y(s[:x].to_i, s[:y].to_i) }
 
       if player_number != current_player_number
         @errors.push NotPlayersTurnError.new
-      else
-        if move_valid?(from_square, to_squares)
-          perform_move(from_square, to_squares)
-          promote(to_squares.last) if promotable?(to_squares.last)
-          turn
-        end
+      elsif move_valid?(from_square, to_squares)
+        perform_move(from_square, to_squares)
+        promote(to_squares.last) if promotable?(to_squares.last)
+        turn
       end
 
       @errors.empty?
@@ -156,16 +154,14 @@ module JustCheckers
 
     def move_valid?(from, to) # :nodoc:
       legs = to.unshift(from)
-      if from && from.piece
-        legs.each_cons(2).map do |a, b|
-          if squares.occupied_by(from.piece.player_number).any? { |s| s.possible_jumps(s.piece, squares).any? }
-            unless a.possible_jumps(from.piece, squares).include?(b)
-              @errors.push PieceMustCaptureError.new
-            end
+      from_piece = from && from.piece
+
+      if from_piece
+        legs.each_cons(2).map do |origin, destination|
+          if squares.occupied_by(from_piece.player_number).any? { |s| s.possible_jumps(s.piece, squares).any? }
+            @errors.push(PieceMustCaptureError.new) unless origin.possible_jumps(from_piece, squares).include?(destination)
           else
-            unless a.possible_moves(from.piece, squares).include?(b)
-              @errors.push InvalidMoveError.new
-            end
+            @errors.push(InvalidMoveError.new) unless origin.possible_moves(from_piece, squares).include?(destination)
           end
         end.all?
       else
@@ -196,6 +192,10 @@ module JustCheckers
 
     def other_player_number # :nodoc:
       current_player_number == 1 ? 2 : 1
+    end
+
+    def no_pieces_for_player?(player_number) # :nodoc:
+      squares.occupied_by(player_number).none? { |s| s.possible_jumps(s.piece, squares).any? || s.possible_moves(s.piece, squares).any? }
     end
 
     def promotable?(square) # :nodoc:
