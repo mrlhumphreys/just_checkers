@@ -5,7 +5,7 @@ require 'just_checkers/square_set'
 describe JustCheckers::SquareSet do
   describe 'initialize' do
     describe 'with squares' do
-      let(:square_set) { JustCheckers::SquareSet.new(squares: [JustCheckers::Square.new(x: 0, y: 0, piece: nil)]) }
+      let(:square_set) { JustCheckers::SquareSet.new(squares: [JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: nil)]) }
 
       it 'must initialize squares' do
         assert_instance_of(JustCheckers::Square, square_set.squares.first)
@@ -13,7 +13,7 @@ describe JustCheckers::SquareSet do
     end
 
     describe 'with hash' do
-      let(:square_set) { JustCheckers::SquareSet.new(squares: [{x: 0, y: 0, piece: nil}]) }
+      let(:square_set) { JustCheckers::SquareSet.new(squares: [{id: 1, x: 0, y: 0, piece: nil}]) }
 
       it 'must initialize squares' do
         assert_instance_of(JustCheckers::Square, square_set.squares.first)
@@ -23,7 +23,7 @@ describe JustCheckers::SquareSet do
 
   describe 'searching' do
     let(:piece) { JustCheckers::Piece.new(player_number: 1, direction: -1, king: false) }
-    let(:square) { JustCheckers::Square.new(x: 0, y: 0, piece: piece) }
+    let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [square]) }
 
     it 'by player number must return the matching squares' do
@@ -36,8 +36,8 @@ describe JustCheckers::SquareSet do
   end
 
   describe 'one square away from' do
-    let(:square) { JustCheckers::Square.new(x: 0, y: 0) }
-    let(:one_square_away_from) { JustCheckers::Square.new(x: 1, y: 1) }
+    let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
+    let(:one_square_away_from) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [square, one_square_away_from]) }
 
     it 'must return all squares one square away from the square' do
@@ -50,8 +50,8 @@ describe JustCheckers::SquareSet do
   end
 
   describe 'two squares away from' do
-    let(:square) { JustCheckers::Square.new(x: 0, y: 0) }
-    let(:two_squares_away_from) { JustCheckers::Square.new(x: 2, y: 2) }
+    let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
+    let(:two_squares_away_from) { JustCheckers::Square.new(id: 1, x: 2, y: 2) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [square, two_squares_away_from]) }
 
     it 'must return all squares one square away from the square' do
@@ -66,9 +66,9 @@ describe JustCheckers::SquareSet do
   describe 'in direction of' do
     let(:direction) { 1 }
     let(:piece) { JustCheckers::Piece.new(player_number: 1, direction: direction, king: false) }
-    let(:square) { JustCheckers::Square.new(x: 4, y: 4, piece: piece) }
-    let(:in_direction) { JustCheckers::Square.new(x: 5, y: 5) }
-    let(:not_in_direction) { JustCheckers::Square.new(x: 3, y: 3) }
+    let(:square) { JustCheckers::Square.new(id: 1, x: 4, y: 4, piece: piece) }
+    let(:in_direction) { JustCheckers::Square.new(id: 2, x: 5, y: 5) }
+    let(:not_in_direction) { JustCheckers::Square.new(id: 3, x: 3, y: 3) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [square, in_direction, not_in_direction]) }
 
     it 'must return all squares in the direction of the piece' do
@@ -82,8 +82,8 @@ describe JustCheckers::SquareSet do
 
   describe 'unoccupied' do
     let(:piece) { JustCheckers::Piece.new(player_number: 1, direction: 1, king: false) }
-    let(:occupied) { JustCheckers::Square.new(x: 0, y: 0, piece: piece) }
-    let(:unoccupied) { JustCheckers::Square.new(x: 1, y: 1) }
+    let(:occupied) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
+    let(:unoccupied) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [unoccupied, occupied]) }
 
     it 'must return squares without pieces' do
@@ -96,10 +96,10 @@ describe JustCheckers::SquareSet do
   end
 
   describe 'between' do
-    let(:from) { JustCheckers::Square.new(x: 0, y: 0) }
-    let(:to) { JustCheckers::Square.new(x: 2, y: 2) }
-    let(:between) { JustCheckers::Square.new(x: 1, y: 1) }
-    let(:outside) { JustCheckers::Square.new(x: 4, y: 4) }
+    let(:from) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
+    let(:to) { JustCheckers::Square.new(id: 2, x: 2, y: 2) }
+    let(:between) { JustCheckers::Square.new(id: 3, x: 1, y: 1) }
+    let(:outside) { JustCheckers::Square.new(id: 4, x: 4, y: 4) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [from, to, between, outside]) }
 
     it 'must return squares between from and to' do
@@ -113,9 +113,9 @@ describe JustCheckers::SquareSet do
 
   describe 'occupied by opponent of' do
     let(:player_number) { 1 }
-    let(:opponent_square) { JustCheckers::Square.new(x: 1, y: 1, piece: {player_number: 2, direction: -1}) }
-    let(:own_square) { JustCheckers::Square.new(x: 2, y: 2, piece: {player_number: player_number, direction: 1}) }
-    let(:empty_square) { JustCheckers::Square.new(x: 3, y: 3) }
+    let(:opponent_square) { JustCheckers::Square.new(id: 1, x: 1, y: 1, piece: {player_number: 2, direction: -1}) }
+    let(:own_square) { JustCheckers::Square.new(id: 2, x: 2, y: 2, piece: {player_number: player_number, direction: 1}) }
+    let(:empty_square) { JustCheckers::Square.new(id: 3, x: 3, y: 3) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [opponent_square, own_square, empty_square]) }
 
     it 'must return opponent squares' do

@@ -31,6 +31,7 @@ module JustCheckers
       @current_player_number = current_player_number
       @squares = SquareSet.new(squares: squares)
       @errors = []
+      @last_change = {}
     end
 
     # @return [Fixnum] who's turn it is.
@@ -42,6 +43,9 @@ module JustCheckers
     # @return [Array<Error>] errors if any.
     attr_reader :errors
 
+    # @return [Hash] most recent change.
+    attr_reader :last_change
+
     # Instantiates a new GameState object in the starting position
     #
     # @return [GameState]
@@ -49,45 +53,45 @@ module JustCheckers
       new({
         current_player_number: 1,
         squares: [
-          { x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 3, y: 0, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 5, y: 0, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 7, y: 0, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 1, x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 2, x: 3, y: 0, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 3, x: 5, y: 0, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 4, x: 7, y: 0, piece: { player_number: 1, direction: 1, king: false }},
 
-          { x: 0, y: 1, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 2, y: 1, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 4, y: 1, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 6, y: 1, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 5, x: 0, y: 1, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 6, x: 2, y: 1, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 7, x: 4, y: 1, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 8, x: 6, y: 1, piece: { player_number: 1, direction: 1, king: false }},
 
-          { x: 1, y: 2, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 3, y: 2, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 5, y: 2, piece: { player_number: 1, direction: 1, king: false }},
-          { x: 7, y: 2, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 9, x: 1, y: 2, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 10, x: 3, y: 2, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 11, x: 5, y: 2, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 12, x: 7, y: 2, piece: { player_number: 1, direction: 1, king: false }},
 
-          { x: 0, y: 3, piece: nil },
-          { x: 2, y: 3, piece: nil },
-          { x: 4, y: 3, piece: nil },
-          { x: 6, y: 3, piece: nil },
+          { id: 13, x: 0, y: 3, piece: nil },
+          { id: 14, x: 2, y: 3, piece: nil },
+          { id: 15, x: 4, y: 3, piece: nil },
+          { id: 16, x: 6, y: 3, piece: nil },
 
-          { x: 1, y: 4, piece: nil },
-          { x: 3, y: 4, piece: nil },
-          { x: 5, y: 4, piece: nil },
-          { x: 7, y: 4, piece: nil },
+          { id: 17, x: 1, y: 4, piece: nil },
+          { id: 18, x: 3, y: 4, piece: nil },
+          { id: 19, x: 5, y: 4, piece: nil },
+          { id: 20, x: 7, y: 4, piece: nil },
 
-          { x: 0, y: 5, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 2, y: 5, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 4, y: 5, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 6, y: 5, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 21, x: 0, y: 5, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 22, x: 2, y: 5, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 23, x: 4, y: 5, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 24, x: 6, y: 5, piece: { player_number: 2, direction: -1, king: false }},
 
-          { x: 1, y: 6, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 3, y: 6, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 5, y: 6, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 7, y: 6, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 25, x: 1, y: 6, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 26, x: 3, y: 6, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 27, x: 5, y: 6, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 28, x: 7, y: 6, piece: { player_number: 2, direction: -1, king: false }},
 
-          { x: 0, y: 7, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 2, y: 7, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 4, y: 7, piece: { player_number: 2, direction: -1, king: false }},
-          { x: 6, y: 7, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 29, x: 0, y: 7, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 30, x: 2, y: 7, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 31, x: 4, y: 7, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 32, x: 6, y: 7, piece: { player_number: 2, direction: -1, king: false }},
         ]
       })
     end
@@ -127,23 +131,34 @@ module JustCheckers
     # @param [Fixnum] player_number
     #   the player number, 1 or 2.
     #
-    # @param [Hash] from
+    # @param [Hash, Fixnum] from
     #   where the moving piece currently is.
     #
-    # @param [Array<Hash>] to
+    # @param [Array<Hash>, Array<Fixnum>] to
     #   each place the piece is going to move to.
     #
     # @return [Boolean]
     def move(player_number, from, to)
       @errors = []
-      from_square = squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)
-      to_squares = to.map { |s| squares.find_by_x_and_y(s[:x].to_i, s[:y].to_i) }
+
+      from_square = if from.is_a?(Hash)
+        squares.find_by_x_and_y(from[:x].to_i, from[:y].to_i)
+      else
+        squares.find_by_id(from.to_i)
+      end
+
+      to_squares = if to.all? { |s| s.is_a?(Hash) }
+        to.map { |position| squares.find_by_x_and_y(position[:x].to_i, position[:y].to_i) }
+      else
+        to.map { |id| squares.find_by_id(id) }
+      end
 
       if player_number != current_player_number
         @errors.push NotPlayersTurnError.new
       elsif move_valid?(from_square, to_squares)
+        @last_change = { type: 'move', data: {player_number: player_number, from: from, to: to} }
         perform_move(from_square, to_squares)
-        promote(to_squares.last) if promotable?(to_squares.last)
+        to_squares.last.promote if to_squares.last.promotable?
         turn
       end
 
@@ -171,14 +186,10 @@ module JustCheckers
       @errors.empty?
     end
 
-    def promote(square) # :nodoc:
-      square.piece.promote
-    end
-
     def perform_move(from, to) # :nodoc:
       legs = to.unshift(from)
-      legs.each_cons(2) do |a, b|
-        between_square = squares.between(a, b).first
+      legs.each_cons(2) do |origin, destination|
+        between_square = squares.between(origin, destination).first
         between_square.piece = nil if between_square
       end
 
@@ -197,17 +208,5 @@ module JustCheckers
     def no_pieces_for_player?(player_number) # :nodoc:
       squares.occupied_by(player_number).none? { |s| s.possible_jumps(s.piece, squares).any? || s.possible_moves(s.piece, squares).any? }
     end
-
-    def promotable?(square) # :nodoc:
-      case square.piece.direction
-      when 1
-        square.y == 7
-      when -1
-        square.y == 0
-      else
-        false
-      end
-    end
-
   end
 end

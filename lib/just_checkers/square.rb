@@ -10,6 +10,9 @@ module JustCheckers
 
     # New objects can be instantiated by passing in a hash with
     #
+    # @param [Fixnum] id
+    #   the unique identifier of the square.
+    #
     # @param [Fixnum] x
     #   the x co-ordinate of the square.
     #
@@ -22,11 +25,13 @@ module JustCheckers
     # ==== Example:
     #   # Instantiates a new Square
     #   JustCheckers::Square.new({
+    #     id: 1,
     #     x: 1,
     #     y: 0,
     #     piece: { player_number: 1, direction: 1, king: false }
     #   })
-    def initialize(x: , y: , piece: nil)
+    def initialize(id: , x: , y: , piece: nil)
+      @id = id
       @x = x
       @y = y
       @piece = if piece.is_a?(Hash)
@@ -35,6 +40,9 @@ module JustCheckers
         piece
       end
     end
+
+    # @return [Fixnum] the unique identifier of the square.
+    attr_reader :id
 
     # @return [Fixnum] the x co-ordinate of the square.
     attr_reader :x
@@ -111,11 +119,32 @@ module JustCheckers
       squares.one_square_away_from(self).in_direction_of(piece, self).unoccupied
     end
 
+    # Checks if the piece on the square can promote.
+    #
+    # @return [Boolean]
+    def promotable?
+      case piece && piece.direction
+      when 1
+        y == 7
+      when -1
+        y == 0
+      else
+        false
+      end
+    end
+
+    # Promotes the piece if the piece exists.
+    #
+    # @return [Boolean]
+    def promote
+      piece && piece.promote
+    end
+
     # A serialized version of the square as a hash
     #
     # @return [Hash]
     def as_json
-      { x: x, y: y, piece: piece && piece.as_json }
+      { id: id, x: x, y: y, piece: piece && piece.as_json }
     end
   end
 end

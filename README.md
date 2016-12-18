@@ -29,6 +29,18 @@ Moves can be made by passing in the player number, from co-ordinates and an arra
   game_state.move(1, {x: 1, y: 2}, [{x: 2, y: 3}])
 ```
 
+Alternatively, moves can be made by specifying the ids of the squares.
+
+```ruby
+  game_state.move(1, 1, [2])
+```
+
+The last change with all its details are found in the `last_change` attribute
+
+```ruby
+  game_state.last_change
+```
+
 If something happens errors may be found in the errors attribute
 
 ```ruby

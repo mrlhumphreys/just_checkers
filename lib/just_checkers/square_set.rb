@@ -67,8 +67,8 @@ module JustCheckers
     #   # Find all squares where piece is nil
     #   square_set.where(piece: nil)
     def where(hash)
-      res = hash.inject(squares) do |memo, (k, v)|
-        memo.select { |s| s.attribute_match?(k, v) }
+      res = hash.inject(squares) do |memo, (attribute, value)|
+        memo.select { |square| square.attribute_match?(attribute, value) }
       end
       self.class.new(squares: res)
     end
@@ -87,6 +87,19 @@ module JustCheckers
     #   square_set.find_by_x_and_y(4, 2)
     def find_by_x_and_y(x, y)
       select { |s| s.x == x && s.y == y }.first
+    end
+
+    # Find the square with the matching unique identifier
+    #
+    # @param [Fixnum] id
+    #   the unique identifier.
+    #
+    # @return [Square]
+    # ==== Example:
+    #   # Find the square with id 4
+    #   square_set.find_by_id(4)
+    def find_by_id(id)
+      select { |s| s.id == id }.first
     end
 
     # Return all squares that are one square away from the passed square.
@@ -134,7 +147,7 @@ module JustCheckers
     #
     # @return [SquareSet]
     def unoccupied
-      select { |s| s.piece.nil? }
+      select(&:unoccupied?)
     end
 
     # Returns squares between a and b.
