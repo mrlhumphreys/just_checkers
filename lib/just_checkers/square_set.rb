@@ -20,7 +20,7 @@ module JustCheckers
     #   # Instantiates a new Square Set
     #   JustCheckers::SquareSet.new({
     #     squares: [
-    #       { x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }}
+    #       { x: 1, y: 0, piece: { player_number: 1, king: false }}
     #     ]
     #   })
     def initialize(squares: [])

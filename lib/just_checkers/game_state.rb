@@ -24,7 +24,7 @@ module JustCheckers
     #   JustCheckers::GameState.new({
     #     current_player_number: 1,
     #     squares: [
-    #       { x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }}
+    #       { x: 1, y: 0, piece: { player_number: 1, king: false }}
     #     ]
     #   })
     def initialize(current_player_number: , squares: [])
@@ -53,20 +53,20 @@ module JustCheckers
       new({
         current_player_number: 1,
         squares: [
-          { id: 1, x: 1, y: 0, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 2, x: 3, y: 0, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 3, x: 5, y: 0, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 4, x: 7, y: 0, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 1, x: 1, y: 0, piece: { player_number: 1, king: false }},
+          { id: 2, x: 3, y: 0, piece: { player_number: 1, king: false }},
+          { id: 3, x: 5, y: 0, piece: { player_number: 1, king: false }},
+          { id: 4, x: 7, y: 0, piece: { player_number: 1, king: false }},
 
-          { id: 5, x: 0, y: 1, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 6, x: 2, y: 1, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 7, x: 4, y: 1, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 8, x: 6, y: 1, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 5, x: 0, y: 1, piece: { player_number: 1, king: false }},
+          { id: 6, x: 2, y: 1, piece: { player_number: 1, king: false }},
+          { id: 7, x: 4, y: 1, piece: { player_number: 1, king: false }},
+          { id: 8, x: 6, y: 1, piece: { player_number: 1, king: false }},
 
-          { id: 9, x: 1, y: 2, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 10, x: 3, y: 2, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 11, x: 5, y: 2, piece: { player_number: 1, direction: 1, king: false }},
-          { id: 12, x: 7, y: 2, piece: { player_number: 1, direction: 1, king: false }},
+          { id: 9, x: 1, y: 2, piece: { player_number: 1, king: false }},
+          { id: 10, x: 3, y: 2, piece: { player_number: 1, king: false }},
+          { id: 11, x: 5, y: 2, piece: { player_number: 1, king: false }},
+          { id: 12, x: 7, y: 2, piece: { player_number: 1, king: false }},
 
           { id: 13, x: 0, y: 3, piece: nil },
           { id: 14, x: 2, y: 3, piece: nil },
@@ -78,20 +78,20 @@ module JustCheckers
           { id: 19, x: 5, y: 4, piece: nil },
           { id: 20, x: 7, y: 4, piece: nil },
 
-          { id: 21, x: 0, y: 5, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 22, x: 2, y: 5, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 23, x: 4, y: 5, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 24, x: 6, y: 5, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 21, x: 0, y: 5, piece: { player_number: 2, king: false }},
+          { id: 22, x: 2, y: 5, piece: { player_number: 2, king: false }},
+          { id: 23, x: 4, y: 5, piece: { player_number: 2, king: false }},
+          { id: 24, x: 6, y: 5, piece: { player_number: 2, king: false }},
 
-          { id: 25, x: 1, y: 6, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 26, x: 3, y: 6, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 27, x: 5, y: 6, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 28, x: 7, y: 6, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 25, x: 1, y: 6, piece: { player_number: 2, king: false }},
+          { id: 26, x: 3, y: 6, piece: { player_number: 2, king: false }},
+          { id: 27, x: 5, y: 6, piece: { player_number: 2, king: false }},
+          { id: 28, x: 7, y: 6, piece: { player_number: 2, king: false }},
 
-          { id: 29, x: 0, y: 7, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 30, x: 2, y: 7, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 31, x: 4, y: 7, piece: { player_number: 2, direction: -1, king: false }},
-          { id: 32, x: 6, y: 7, piece: { player_number: 2, direction: -1, king: false }},
+          { id: 29, x: 0, y: 7, piece: { player_number: 2, king: false }},
+          { id: 30, x: 2, y: 7, piece: { player_number: 2, king: false }},
+          { id: 31, x: 4, y: 7, piece: { player_number: 2, king: false }},
+          { id: 32, x: 6, y: 7, piece: { player_number: 2, king: false }},
         ]
       })
     end
