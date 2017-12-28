@@ -28,7 +28,7 @@ module JustCheckers
     #     id: 1,
     #     x: 1,
     #     y: 0,
-    #     piece: { player_number: 1, direction: 1, king: false }
+    #     piece: { player_number: 1, king: false }
     #   })
     def initialize(id: , x: , y: , piece: nil)
       @id = id
