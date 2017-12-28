@@ -150,7 +150,7 @@ module JustCheckers
       to_squares = if to.all? { |s| s.is_a?(Hash) }
         to.map { |position| squares.find_by_x_and_y(position[:x].to_i, position[:y].to_i) }
       else
-        to.map { |id| squares.find_by_id(id) }
+        to.map { |id| squares.find_by_id(id.to_i) }
       end
 
       if player_number != current_player_number
