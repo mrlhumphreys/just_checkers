@@ -22,7 +22,7 @@ describe JustCheckers::SquareSet do
   end
 
   describe 'searching' do
-    let(:piece) { JustCheckers::Piece.new(player_number: 1, king: false) }
+    let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
     let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [square]) }
 
@@ -64,7 +64,7 @@ describe JustCheckers::SquareSet do
   end
 
   describe 'in direction of' do
-    let(:piece) { JustCheckers::Piece.new(player_number: 1, king: false) }
+    let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
     let(:square) { JustCheckers::Square.new(id: 1, x: 4, y: 4, piece: piece) }
     let(:in_direction) { JustCheckers::Square.new(id: 2, x: 5, y: 5) }
     let(:not_in_direction) { JustCheckers::Square.new(id: 3, x: 3, y: 3) }
@@ -80,7 +80,7 @@ describe JustCheckers::SquareSet do
   end
 
   describe 'unoccupied' do
-    let(:piece) { JustCheckers::Piece.new(player_number: 1, king: false) }
+    let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
     let(:occupied) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
     let(:unoccupied) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [unoccupied, occupied]) }
@@ -112,8 +112,8 @@ describe JustCheckers::SquareSet do
 
   describe 'occupied by opponent of' do
     let(:player_number) { 1 }
-    let(:opponent_square) { JustCheckers::Square.new(id: 1, x: 1, y: 1, piece: {player_number: 2}) }
-    let(:own_square) { JustCheckers::Square.new(id: 2, x: 2, y: 2, piece: {player_number: player_number}) }
+    let(:opponent_square) { JustCheckers::Square.new(id: 1, x: 1, y: 1, piece: {id: 1, player_number: 2}) }
+    let(:own_square) { JustCheckers::Square.new(id: 2, x: 2, y: 2, piece: {id: 2, player_number: player_number}) }
     let(:empty_square) { JustCheckers::Square.new(id: 3, x: 3, y: 3) }
     let(:square_set) { JustCheckers::SquareSet.new(squares: [opponent_square, own_square, empty_square]) }
 

@@ -40,8 +40,8 @@ describe JustCheckers::GameState do
     let(:from_id) { 1 }
     let(:to_id) { 3 }
 
-    let(:from) { JustCheckers::Square.new(id: from_id, x: from_x, y: from_y, piece: {player_number: player_number}) }
-    let(:between) { JustCheckers::Square.new(id: 2, x: between_x, y: between_y, piece: {player_number: 2}) }
+    let(:from) { JustCheckers::Square.new(id: from_id, x: from_x, y: from_y, piece: {id: 1, player_number: player_number}) }
+    let(:between) { JustCheckers::Square.new(id: 2, x: between_x, y: between_y, piece: {id: 2, player_number: 2}) }
     let(:to) { JustCheckers::Square.new(id: to_id, x: to_x, y: to_y) }
     let(:game_state) { JustCheckers::GameState.new(current_player_number: player_number, squares: [from, between, to]) }
 
@@ -88,10 +88,10 @@ describe JustCheckers::GameState do
     let(:not_jumper_position) { { x: 4, y: 0 } }
     let(:empty_position) { { x: 5, y: 1 } }
 
-    let(:jumper) { JustCheckers::Square.new(id: 1, x: jumper_position[:x], y: jumper_position[:y], piece: {player_number: player_number}) }
-    let(:enemy) { JustCheckers::Square.new(id: 2, x: 1, y: 1, piece: {player_number: 2}) }
+    let(:jumper) { JustCheckers::Square.new(id: 1, x: jumper_position[:x], y: jumper_position[:y], piece: {id: 1, player_number: player_number}) }
+    let(:enemy) { JustCheckers::Square.new(id: 2, x: 1, y: 1, piece: {id: 2, player_number: 2}) }
     let(:landing) { JustCheckers::Square.new(id: 3, x: landing_position[:x], y: landing_position[:y]) }
-    let(:not_jumper) { JustCheckers::Square.new(id: 4, x: not_jumper_position[:x], y: not_jumper_position[:y], piece: {player_number: player_number}) }
+    let(:not_jumper) { JustCheckers::Square.new(id: 4, x: not_jumper_position[:x], y: not_jumper_position[:y], piece: {id: 3, player_number: player_number}) }
     let(:empty) { JustCheckers::Square.new(id: 5, x: empty_position[:x], y: empty_position[:y]) }
 
     let(:game_state) { JustCheckers::GameState.new(current_player_number: player_number, squares: [jumper, enemy, landing, not_jumper, empty]) }
@@ -120,7 +120,7 @@ describe JustCheckers::GameState do
     let(:mover_position) { { x: 4, y: 0} }
     let(:empty_position) { { x: 5, y: 1} }
 
-    let(:mover) { JustCheckers::Square.new(id: 1, x: mover_position[:x], y: mover_position[:y], piece: {player_number: player_number}) }
+    let(:mover) { JustCheckers::Square.new(id: 1, x: mover_position[:x], y: mover_position[:y], piece: {id: 1, player_number: player_number}) }
     let(:empty) { JustCheckers::Square.new(id: 2, x: empty_position[:x], y: empty_position[:y]) }
 
     let(:game_state) { JustCheckers::GameState.new(current_player_number: player_number, squares: [mover, empty]) }
@@ -144,7 +144,7 @@ describe JustCheckers::GameState do
     let(:from_position) { { x: from_x, y: from_y } }
     let(:to_position) { { x: to_x, y: to_y } }
 
-    let(:from_square) { JustCheckers::Square.new(id: 1, x: from_x, y: from_y, piece: {player_number: 2}) }
+    let(:from_square) { JustCheckers::Square.new(id: 1, x: from_x, y: from_y, piece: {id: 1, player_number: 2}) }
     let(:to_square) { JustCheckers::Square.new(id: 2, x: to_x, y: to_y) }
 
     let(:game_state) { JustCheckers::GameState.new(squares: [from_square, to_square], current_player_number: current_player_number) }
@@ -202,7 +202,7 @@ describe JustCheckers::GameState do
     let(:to_position) { { x: to_x, y: to_y } }
     let(:behind_position) { { x: behind_x, y: behind_y } }
 
-    let(:from_square) { JustCheckers::Square.new(id: 1, x: from_x, y: from_y, piece: {player_number: 2}) }
+    let(:from_square) { JustCheckers::Square.new(id: 1, x: from_x, y: from_y, piece: {id: 1, player_number: 2}) }
     let(:to_square) { JustCheckers::Square.new(id: 2, x: to_x, y: to_y) }
     let(:behind_square) { JustCheckers::Square.new(id: 3, x: behind_x, y: behind_y) }
 
@@ -272,10 +272,10 @@ describe JustCheckers::GameState do
     let(:first_landing_position) { { x: first_landing_x, y: first_landing_y } }
     let(:second_landing_position) { { x: second_landing_x, y: second_landing_y} }
 
-    let(:jumper) { JustCheckers::Square.new(id: 1, x: jumper_x, y: jumper_y, piece: {player_number: 1}) }
-    let(:first_enemy) { JustCheckers::Square.new(id: 2, x: 2, y: 1, piece: {player_number: 2}) }
+    let(:jumper) { JustCheckers::Square.new(id: 1, x: jumper_x, y: jumper_y, piece: {id: 1, player_number: 1}) }
+    let(:first_enemy) { JustCheckers::Square.new(id: 2, x: 2, y: 1, piece: {id: 2, player_number: 2}) }
     let(:first_landing) { JustCheckers::Square.new(id: 3, x: first_landing_x, y: first_landing_y) }
-    let(:second_enemy) { JustCheckers::Square.new(id: 4, x: 2, y: 3, piece: {player_number: 2}) }
+    let(:second_enemy) { JustCheckers::Square.new(id: 4, x: 2, y: 3, piece: {id: 3, player_number: 2}) }
     let(:second_landing) { JustCheckers::Square.new(id: 5, x: second_landing_x, y: second_landing_y) }
 
     let(:game_state) { JustCheckers::GameState.new(squares: [jumper, first_enemy, first_landing, second_enemy, second_landing], current_player_number: current_player_number) }
@@ -301,7 +301,7 @@ describe JustCheckers::GameState do
     let(:moving_x) { 1 }
     let(:moving_y) { 6 }
     let(:moving_position) { {x: moving_x, y: moving_y} }
-    let(:moving) { JustCheckers::Square.new(id: 2, x: moving_x, y: moving_y, piece: {player_number: 1}) }
+    let(:moving) { JustCheckers::Square.new(id: 2, x: moving_x, y: moving_y, piece: {id: 1, player_number: 1}) }
 
     let(:game_state) { JustCheckers::GameState.new(squares: [moving, last_rank], current_player_number: current_player_number) }
 
@@ -313,7 +313,7 @@ describe JustCheckers::GameState do
   end
 
   describe 'a player has no pieces' do
-    let(:player_one_square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {player_number: 1}) }
+    let(:player_one_square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {id: 1, player_number: 1}) }
     let(:empty_square) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
     let(:game_state) { JustCheckers::GameState.new(current_player_number: 1, squares: [player_one_square, empty_square]) }
 
@@ -323,10 +323,10 @@ describe JustCheckers::GameState do
   end
 
   describe 'a player has no moves' do
-    let(:player_one_square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {player_number: 1}) }
+    let(:player_one_square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {id: 1, player_number: 1}) }
     let(:empty_square) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
-    let(:blocking_square) { JustCheckers::Square.new(id: 3, x: 6, y: 0, piece: {player_number: 1}) }
-    let(:player_two_square) { JustCheckers::Square.new(id: 4, x: 7, y: 1, piece: {player_number: 2}) }
+    let(:blocking_square) { JustCheckers::Square.new(id: 3, x: 6, y: 0, piece: {id: 2, player_number: 1}) }
+    let(:player_two_square) { JustCheckers::Square.new(id: 4, x: 7, y: 1, piece: {id: 3, player_number: 2}) }
     let(:game_state) { JustCheckers::GameState.new(current_player_number: 1, squares: [player_one_square, empty_square, blocking_square, player_two_square]) }
 
     it 'makes the other player the winner' do
@@ -335,9 +335,9 @@ describe JustCheckers::GameState do
   end
 
   describe 'both player has moves' do
-    let(:player_one_square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {player_number: 1}) }
+    let(:player_one_square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {id: 1, player_number: 1}) }
     let(:empty_square) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
-    let(:player_two_square) { JustCheckers::Square.new(id: 3, x: 2, y: 2, piece: {player_number: 2}) }
+    let(:player_two_square) { JustCheckers::Square.new(id: 3, x: 2, y: 2, piece: {id: 2, player_number: 2}) }
     let(:game_state) { JustCheckers::GameState.new(current_player_number: 1, squares: [player_one_square, empty_square, player_two_square]) }
 
     it 'makes the other player the winner' do
