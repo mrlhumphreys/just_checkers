@@ -20,45 +20,6 @@ describe JustCheckers::Square do
         assert_instance_of JustCheckers::Piece, square.piece
       end
     end
-
-    describe 'with a piece' do
-      let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: {id: 1, player_number: 1, king: false}) }
-
-      it 'must not be unoccupied' do
-        refute square.unoccupied?
-      end
-    end
-
-    describe 'without a piece' do
-      let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
-
-      it 'must be unoccupied' do
-        assert square.unoccupied?
-      end
-    end
-
-    describe 'attribute_match?' do
-      let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
-      let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
-
-      it 'must match' do
-        assert square.attribute_match?(:piece, {king: false})
-      end
-    end
-  end
-
-  describe 'point' do
-    let(:square) { JustCheckers::Square.new(id: 1, x: 1, y: 1) }
-    let(:point) { square.point }
-
-    it 'must be a point' do
-      assert_instance_of JustCheckers::Point, point
-    end
-
-    it 'must have the same coordinates' do
-      assert_equal square.x, point.x
-      assert_equal square.y, point.y
-    end
   end
 
   describe 'a blocked square' do

@@ -1,12 +1,13 @@
 require 'just_checkers/piece'
 require 'just_checkers/point'
+require 'board_game_grid'
 
 module JustCheckers
 
   # = Square
   #
   # A Square on a board of checkers
-  class Square
+  class Square < BoardGameGrid::Square
 
     # New objects can be instantiated by passing in a hash with
     #
@@ -41,56 +42,6 @@ module JustCheckers
       end
     end
 
-    # @return [Fixnum] the unique identifier of the square.
-    attr_reader :id
-
-    # @return [Fixnum] the x co-ordinate of the square.
-    attr_reader :x
-
-    # @return [Fixnum] the y co-ordinate of the square.
-    attr_reader :y
-
-    # @return [Piece,NilClass] The piece on the square if any.
-    attr_accessor :piece
-
-    # checks if the square matches the attributes passed.
-    #
-    # @param [Symbol] attribute
-    #   the square's attribute.
-    #
-    # @param [Object,Hash] value
-    #   a value to match on. Can be a hash of attribute/value pairs for deep matching
-    #
-    # ==== Example:
-    #   # Check if square has a piece owned by player 1
-    #   square.attribute_match?(:piece, player_number: 1)
-    def attribute_match?(attribute, value)
-      hash_obj_matcher = lambda do |obj, k, v|
-        value = obj.send(k)
-        if !value.nil? && v.is_a?(Hash)
-          v.all? { |k2,v2| hash_obj_matcher.call(value, k2, v2) }
-        else
-          value == v
-        end
-      end
-
-      hash_obj_matcher.call(self, attribute, value)
-    end
-
-    # Is the square unoccupied by a piece?
-    #
-    # @return [Boolean]
-    def unoccupied?
-      piece.nil?
-    end
-
-    # A point object with the square's co-ordinates.
-    #
-    # @return [Point]
-    def point
-      Point.new(x, y)
-    end
-
     # A serialized version of the square as a hash
     #
     # @return [Hash]
@@ -108,7 +59,7 @@ module JustCheckers
     #
     # @return [SquareSet]
     def possible_jumps(piece, squares)
-      squares.two_squares_away_from(self).in_direction_of(piece, self).unoccupied.select do |s|
+      squares.at_range(self, 2).in_direction_of(piece, self).unoccupied.select do |s|
         squares.between(self, s).occupied_by_opponent_of(piece.player_number).any?
       end
     end
@@ -123,7 +74,7 @@ module JustCheckers
     #
     # @return [SquareSet]
     def possible_moves(piece, squares)
-      squares.one_square_away_from(self).in_direction_of(piece, self).unoccupied
+      squares.at_range(self, 1).in_direction_of(piece, self).unoccupied
     end
 
     # Checks if the piece on the square can promote.

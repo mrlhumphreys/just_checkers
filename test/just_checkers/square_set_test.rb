@@ -21,48 +21,6 @@ describe JustCheckers::SquareSet do
     end
   end
 
-  describe 'searching' do
-    let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
-    let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
-    let(:square_set) { JustCheckers::SquareSet.new(squares: [square]) }
-
-    it 'by player number must return the matching squares' do
-      assert_instance_of(JustCheckers::Square, square_set.where(piece: { player_number: piece.player_number }).first)
-    end
-
-    it 'by x and y must return the matching square' do
-      assert_instance_of(JustCheckers::Square, square_set.find_by_x_and_y(0, 0))
-    end
-  end
-
-  describe 'one square away from' do
-    let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
-    let(:one_square_away_from) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
-    let(:square_set) { JustCheckers::SquareSet.new(squares: [square, one_square_away_from]) }
-
-    it 'must return all squares one square away from the square' do
-      assert(square_set.one_square_away_from(square).include?(one_square_away_from))
-    end
-
-    it 'must not return other squares' do
-      refute(square_set.one_square_away_from(square).include?(square))
-    end
-  end
-
-  describe 'two squares away from' do
-    let(:square) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
-    let(:two_squares_away_from) { JustCheckers::Square.new(id: 1, x: 2, y: 2) }
-    let(:square_set) { JustCheckers::SquareSet.new(squares: [square, two_squares_away_from]) }
-
-    it 'must return all squares one square away from the square' do
-      assert(square_set.two_squares_away_from(square).include?(two_squares_away_from))
-    end
-
-    it 'must not return other squares' do
-      refute(square_set.two_squares_away_from(square).include?(square))
-    end
-  end
-
   describe 'in direction of' do
     let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
     let(:square) { JustCheckers::Square.new(id: 1, x: 4, y: 4, piece: piece) }
@@ -76,37 +34,6 @@ describe JustCheckers::SquareSet do
 
     it 'must not return squares not in direction of the piece' do
       refute(square_set.in_direction_of(piece, square).include?(not_in_direction))
-    end
-  end
-
-  describe 'unoccupied' do
-    let(:piece) { JustCheckers::Piece.new(id: 1, player_number: 1, king: false) }
-    let(:occupied) { JustCheckers::Square.new(id: 1, x: 0, y: 0, piece: piece) }
-    let(:unoccupied) { JustCheckers::Square.new(id: 2, x: 1, y: 1) }
-    let(:square_set) { JustCheckers::SquareSet.new(squares: [unoccupied, occupied]) }
-
-    it 'must return squares without pieces' do
-      assert(square_set.unoccupied.include?(unoccupied))
-    end
-
-    it 'must not return squares with pieces' do
-      refute(square_set.unoccupied.include?(occupied))
-    end
-  end
-
-  describe 'between' do
-    let(:from) { JustCheckers::Square.new(id: 1, x: 0, y: 0) }
-    let(:to) { JustCheckers::Square.new(id: 2, x: 2, y: 2) }
-    let(:between) { JustCheckers::Square.new(id: 3, x: 1, y: 1) }
-    let(:outside) { JustCheckers::Square.new(id: 4, x: 4, y: 4) }
-    let(:square_set) { JustCheckers::SquareSet.new(squares: [from, to, between, outside]) }
-
-    it 'must return squares between from and to' do
-      assert(square_set.between(from, to).include?(between))
-    end
-
-    it 'must not return squares outside of from and to' do
-      refute(square_set.between(from, to).include?(outside))
     end
   end
 
