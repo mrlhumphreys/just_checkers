@@ -91,6 +91,13 @@ module JustCheckers
       Point.new(x, y)
     end
 
+    # A serialized version of the square as a hash
+    #
+    # @return [Hash]
+    def as_json
+      { id: id, x: x, y: y, piece: piece && piece.as_json }
+    end
+
     # All squares that a piece on this square could jump to, given the board.
     #
     # @param [Piece] piece
@@ -138,13 +145,6 @@ module JustCheckers
     # @return [Boolean]
     def promote
       piece && piece.promote
-    end
-
-    # A serialized version of the square as a hash
-    #
-    # @return [Hash]
-    def as_json
-      { id: id, x: x, y: y, piece: piece && piece.as_json }
     end
   end
 end

@@ -102,6 +102,54 @@ module JustCheckers
       select { |s| s.id == id }.first
     end
 
+    # Find all squares without pieces on them.
+    #
+    # @return [SquareSet]
+    def unoccupied
+      select(&:unoccupied?)
+    end
+
+    # Returns squares between a and b.
+    # Only squares that are in the same diagonal will return squares.
+    #
+    # @param [Square] a
+    #   a square.
+    #
+    # @param [Square] b
+    #   another square.
+    #
+    # @return [SquareSet]
+    #
+    # ==== Example:
+    #   # Get all squares between square_a and square_b
+    #   square_set.between(square_a, square_b)
+    def between(a, b)
+      vector = Vector.new(a, b)
+      if vector.diagonal?
+        point_counter = a.point
+        direction = vector.direction
+        squares = []
+
+        while point_counter != b.point
+          point_counter = point_counter + direction
+          square = find_by_x_and_y(point_counter.x, point_counter.y)
+          if square && square.point != b.point
+            squares.push(square)
+          end
+        end
+      else
+        squares = []
+      end
+      self.class.new(squares: squares)
+    end
+
+    # serializes the squares as a hash
+    #
+    # @return [Hash]
+    def as_json
+      squares.map(&:as_json)
+    end
+
     # Return all squares that are one square away from the passed square.
     #
     # @param [Square] square
@@ -143,47 +191,6 @@ module JustCheckers
       end
     end
 
-    # Find all squares without pieces on them.
-    #
-    # @return [SquareSet]
-    def unoccupied
-      select(&:unoccupied?)
-    end
-
-    # Returns squares between a and b.
-    # Only squares that are in the same diagonal will return squares.
-    #
-    # @param [Square] a
-    #   a square.
-    #
-    # @param [Square] b
-    #   another square.
-    #
-    # @return [SquareSet]
-    #
-    # ==== Example:
-    #   # Get all squares between square_a and square_b
-    #   square_set.between(square_a, square_b)
-    def between(a, b)
-      vector = Vector.new(a, b)
-      if vector.diagonal
-        point_counter = a.point
-        direction = vector.direction
-        squares = []
-
-        while point_counter != b.point
-          point_counter = point_counter + direction
-          square = find_by_x_and_y(point_counter.x, point_counter.y)
-          if square && square.point != b.point
-            squares.push(square)
-          end
-        end
-      else
-        squares = []
-      end
-      self.class.new(squares: squares)
-    end
-
     # Takes a player number and returns all squares occupied by the opponent of the player
     #
     # @param [Fixnum] player_number
@@ -202,15 +209,6 @@ module JustCheckers
     # @return [SquareSet]
     def occupied_by(player_number)
       select { |s| s.piece && s.piece.player_number == player_number }
-    end
-
-    attr_reader :squares
-
-    # serializes the squares as a hash
-    #
-    # @return [Hash]
-    def as_json
-      squares.map(&:as_json)
     end
   end
 end

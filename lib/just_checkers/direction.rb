@@ -7,25 +7,28 @@ module JustCheckers
 
     # New objects can be instantiated with
     #
-    # @param [Fixnum] x
-    #   the x magnitude.
+    # @param [Fixnum] dx
+    #   the dx magnitude.
     #
-    # @param [Fixnum] y
-    #   the y magnitude.
+    # @param [Fixnum] dy
+    #   the dy magnitude.
     #
     # ==== Example:
     #   # Instantiates a new Direction
     #   JustCheckers::Direction.new({
-    #     x: 1,
-    #     y: 1
+    #     dx: 1,
+    #     dy: 1
     #   })
-    def initialize(x, y)
+    def initialize(dx, dy)
+      x = dx == 0 ? dx : dx/dx.abs
+      y = dy == 0 ? dy : dy/dy.abs
+
       @x, @y = x, y
     end
 
     # @return [Fixnum] the x magnitude.
     attr_reader :x
-    
+
     # @return [Fixnum] the y magnitude.
     attr_reader :y
 
