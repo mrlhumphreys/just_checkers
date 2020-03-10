@@ -36,7 +36,7 @@ module JustCheckers
       @x = x
       @y = y
       @piece = if piece.is_a?(Hash)
-        Piece.new(piece)
+        Piece.new(**piece)
       else
         piece
       end

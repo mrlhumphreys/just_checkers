@@ -1,5 +1,5 @@
-require 'minitest/spec'
 require 'minitest/autorun'
+require 'minitest/spec'
 require 'just_checkers/game_state'
 
 describe JustCheckers::GameState do

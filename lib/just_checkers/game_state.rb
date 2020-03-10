@@ -50,7 +50,7 @@ module JustCheckers
     #
     # @return [GameState]
     def self.default
-      new({
+      new(
         current_player_number: 1,
         squares: [
           { id: 1, x: 1, y: 0, piece: { id: 1, player_number: 1, king: false }},
@@ -93,7 +93,7 @@ module JustCheckers
           { id: 31, x: 4, y: 7, piece: { id: 23, player_number: 2, king: false }},
           { id: 32, x: 6, y: 7, piece: { id: 24, player_number: 2, king: false }}
         ]
-      })
+      )
     end
 
     # A hashed serialized representation of the game state

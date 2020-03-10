@@ -23,7 +23,7 @@ module JustCheckers
     #   })
     def initialize(squares: [])
       @squares = if squares.all? { |element| element.instance_of?(Hash) }
-        squares.map { |args| JustCheckers::Square.new(args) }
+        squares.map { |args| JustCheckers::Square.new(**args) }
       elsif squares.all? { |element| element.instance_of?(JustCheckers::Square) }
         squares
       else
