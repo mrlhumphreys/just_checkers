@@ -25,5 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0.1"
   spec.add_development_dependency 'minitest', '~> 5.14.0'
 
-  spec.add_runtime_dependency 'board_game_grid', '~> 0.1.0'
+  spec.add_runtime_dependency 'board_game_grid', '~> 0.1.1'
 end
